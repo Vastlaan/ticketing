@@ -5,9 +5,12 @@ const app = express();
 
 app.use(json());
 
-app.get("/api/user/currentuser", (req, res) => {
-    res.send("Hi there");
-});
+app.get(
+    "/api/user/currentuser",
+    (req: any, res: { send: (arg0: string) => void }) => {
+        res.send("Hi there");
+    }
+);
 
 const PORT = 3000 || process.env.PORT;
 
