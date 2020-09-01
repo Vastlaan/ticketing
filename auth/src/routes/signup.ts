@@ -42,7 +42,7 @@ router.post(
         // generating jwt
         const userJWT = jwt.sign(
             { id: user.id, email: user.email },
-            "jfj020jofjWREW39392jewjejow"
+            process.env.JWT_KEY! //exclamation mark inform TS about that this varibale is defined (there is a check condition while app starts up in index.ts)
         );
         // storing jwt to cookie-session object
         req.session = {
