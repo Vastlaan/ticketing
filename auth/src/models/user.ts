@@ -18,16 +18,31 @@ interface UserDoc extends mongoose.Document {
 }
 
 const { Schema } = mongoose;
-const userSchema = new Schema({
-    email: {
-        type: String,
-        required: true,
+const userSchema = new Schema(
+    {
+        email: {
+            type: String,
+            required: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
     },
-    password: {
-        type: String,
-        required: true,
-    },
-});
+    // this options passed to the userSchema allow us to attach the definition of how returned object will be transformed to JSON format
+    // we need customize transformation to JSON to get rid of password field and turn _id into id .
+    // That way whenever we transform newly created user into JSON format to send it to the client, we will avoid sending password and will send id in proper format
+    {
+        toJSON: {
+            transform(doc, ret) {
+                delete ret.password;
+                delete ret.__v;
+                ret.id = ret._id;
+                delete ret._id;
+            },
+        },
+    }
+);
 
 // running mongo db middleware every time password is modified
 userSchema.pre("save", async function (done) {

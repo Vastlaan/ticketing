@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user";
-import { RequestValidationError } from "../errors/request-validation-error";
 import { UserExistsError } from "../errors/user-exists-error";
+import { requestValidator } from "../middlewares/request-validator";
 
 const router = express.Router();
 
@@ -17,17 +17,9 @@ router.post(
             .isLength({ min: 6, max: 20 })
             .withMessage("Password must be between 6 and 20 characters."),
     ],
+    // logic of validation catched above errors (if exist) moved to middleware requestValidator
+    requestValidator,
     async (req: Request, res: Response) => {
-        // reading results of validation process
-        const errors = validationResult(req);
-        // if not empty then not valid
-        if (!errors.isEmpty()) {
-            // // now when we set up errorHandler middleware we send the request further to the middleware by throwing new error
-            // // when new Error is thrown, express passes new function (err, req, res, next) to the next step, which is our errorHandler
-            // // whatever message is passed as parameter will be assign to the message properity of err object
-            // throw new Error("Invalid email or password");
-            throw new RequestValidationError(errors.array());
-        }
         //retriving already validated email and password
         const { email, password } = req.body;
         //check if user already exitsts
@@ -39,7 +31,7 @@ router.post(
         }
         //creating user
         const user = User.build({ email, password });
-        // generating jwt
+        // generating jwt takes two arguments, acctually token we want to create, and secret key for future validation
         const userJWT = jwt.sign(
             { id: user.id, email: user.email },
             process.env.JWT_KEY! //exclamation mark inform TS about that this varibale is defined (there is a check condition while app starts up in index.ts)
@@ -51,7 +43,9 @@ router.post(
         //actually saving the created user
         await user.save();
         // returning succesful response
-        res.status(201).end();
+        //  We send user which has the password properity reveald, but this will not be send
+        // password and __v are removed from this object (check user model) while sending over JSON and _id is turned to id
+        res.status(201).send(user);
     }
 );
 

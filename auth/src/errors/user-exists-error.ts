@@ -2,6 +2,7 @@ import { CustomError } from "./custom-error";
 
 export class UserExistsError extends CustomError {
     statusCode = 409;
+
     error = "User already exists";
     constructor() {
         super();
