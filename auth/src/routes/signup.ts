@@ -25,7 +25,7 @@ router.post(
         //check if user already exitsts
         const existingUser = await User.findOne({ email });
         // if not exists than existingUser is null
-        console.log(existingUser);
+
         if (existingUser) {
             throw new UserExistsError();
         }

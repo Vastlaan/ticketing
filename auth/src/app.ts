@@ -18,8 +18,8 @@ app.use(
     cookieSession({
         // turn out the encryption of the cookie (JWT is already encrypted) to simplify reading it accross multiple services running different languages
         signed: false,
-        // require https connection to use the cookie
-        secure: true,
+        // require https connection to use the cookie while not under test env
+        secure: process.env.NODE_ENV !== "test",
     })
 );
 

@@ -8,8 +8,8 @@
         "test": "jest --watchAll --no-cache"
     },
     "jest": {
-        "presets": "ts-jest",
-        "testEvironment": "node",
+        "preset": "ts-jest",
+        "testEnvironment": "node",
         "setupFilesAfterEnv": [
             "./src/test/setup.ts"
         ]
@@ -30,5 +30,13 @@
         "mongoose": "^5.10.0",
         "ts-node-dev": "^1.0.0-pre.57",
         "typescript": "^3.9.7"
+    },
+    "devDependencies": {
+        "@types/jest": "^26.0.13",
+        "@types/supertest": "^2.0.10",
+        "jest": "^26.4.2",
+        "mongodb-memory-server": "^6.5.0",
+        "supertest": "^4.0.2",
+        "ts-jest": "^26.3.0"
     }
 }
