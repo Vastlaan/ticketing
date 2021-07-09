@@ -9,10 +9,26 @@ build:
         push: false
     artifacts:
         - image: noirfatale/auth
-          context: auth
+          context: auth #directory to watch
           docker:
               dockerfile: Dockerfile
           sync:
               manual:
-                  - src: "./auth/**/*.ts"
+                  - src: "src/**/*.ts"  # path inside the context
+                    dest: .
+        - image: noirfatale/client
+          context: client
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "**/*.js"
+                    dest: .
+        - image: noirfatale/tickets
+          context: tickets #directory to watch
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "src/**/*.ts"  # path inside the context
                     dest: .

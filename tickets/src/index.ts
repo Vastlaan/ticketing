@@ -2,8 +2,11 @@ import mongoose from "mongoose";
 import { app } from "./app";
 
 const start = async () => {
+
+    console.log(global.global)
+    
     if (!process.env.JWT_KEY || !process.env.MONGO_URI) {
-        throw new Error("The JWT_KEY environmental varible must be defined");
+        throw new Error("The environmental varibles must be defined!");
     }
     try {
         // use mongoose.connect('') for single db or mongoose.createConnection('') for multiple db

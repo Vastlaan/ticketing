@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: tickets-mongo-depl
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: tickets-mongo
+    template:
+        metadata:
+            labels:
+                app: tickets-mongo
+        spec:
+            containers:
+                - name: tickets-mongo
+                  image: mongo #this is coming from public docker hub image
+
+---
+#Creating Cluster IP service to be able to connect to pod created by above Deployment
+
+apiVersion: v1
+kind: Service
+metadata:
+    name: tickets-mongo-srv #this is domainname through out which we will be abble to connect to pod this service is related to
+spec:
+    selector:
+        app: tickets-mongo
+    ports:
+        - name: db
+          protocol: TCP
+          port: 27017 #this is the default port for mongo
+          targetPort: 27017

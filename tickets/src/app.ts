@@ -2,11 +2,15 @@ import express from "express";
 import { json } from "body-parser";
 import "express-async-errors"; //handles asynchronous errors as syncronous
 import cookieSession from "cookie-session";
-import { CurrentUserRouter } from "./routes/current-user";
-import { SignupRouter } from "./routes/signup";
-import { SigninRouter } from "./routes/signin";
-import { SignoutRouter } from "./routes/signout";
+import { currentUser } from "@itcontext/ticketing-common";
 import { errorHandler, NotFoundError } from "@itcontext/ticketing-common";
+
+//routes
+import { createTicketRouter } from "./routes/new";
+import { getTicketRouter } from "./routes/show";
+import { getIndexRouter } from "./routes/getIndex";
+import { updateTicketRouter } from "./routes/update";
+
 
 const app = express();
 // express trust nginx proxy
@@ -21,11 +25,12 @@ app.use(
         secure: process.env.NODE_ENV !== "test",
     })
 );
+app.use(currentUser)
 
-app.use(CurrentUserRouter);
-app.use(SigninRouter);
-app.use(SignoutRouter);
-app.use(SignupRouter);
+app.use(createTicketRouter)
+app.use(getTicketRouter)
+app.use(getIndexRouter)
+app.use(updateTicketRouter)
 
 // app.all listens to all type of http requests; thanks to express-async-errors we don't have to handle async errors ourselves
 app.all("*", async () => {

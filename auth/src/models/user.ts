@@ -44,7 +44,7 @@ const userSchema = new Schema(
     }
 );
 
-// running mongo db middleware every time password is modified
+// running mongo db middleware every time save method on User model is called and "password" filed is modyfied
 userSchema.pre("save", async function (done) {
     if (this.isModified("password")) {
         const hash = await Password.toHash(this.get("password"));

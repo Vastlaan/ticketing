@@ -2,8 +2,7 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user";
-import { UserExistsError } from "../errors/user-exists-error";
-import { requestValidator } from "../middlewares/request-validator";
+import { UserExistsError, requestValidator} from "@itcontext/ticketing-common";
 
 const router = express.Router();
 
@@ -33,7 +32,7 @@ router.post(
         const user = User.build({ email, password });
         // generating jwt takes two arguments, acctually token we want to create, and secret key for future validation
         const userJWT = jwt.sign(
-            { id: user.id, email: user.email },
+            { id: user.id, email: user.email }, // we can use user.id because in User model we changed returned value from _id to id
             process.env.JWT_KEY! //exclamation mark inform TS about that this varibale is defined (there is a check condition while app starts up in index.ts)
         );
         // storing jwt to cookie-session object
@@ -45,7 +44,7 @@ router.post(
         // returning succesful response
         //  We send user which has the password properity reveald, but this will not be send
         // password and __v are removed from this object (check user model) while sending over JSON and _id is turned to id
-        res.status(201).send(user);
+        res.status(201).json({user});
     }
 );
 

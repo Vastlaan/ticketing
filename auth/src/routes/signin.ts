@@ -2,8 +2,7 @@ import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { body } from "express-validator";
 import { User } from "../models/user";
-import { requestValidator } from "../middlewares/request-validator";
-import { BadRequestError } from "../errors/bad-request-error";
+import { requestValidator, BadRequestError } from "@itcontext/ticketing-common";
 import { Password } from "../services/password";
 
 const router = express.Router();
@@ -49,7 +48,7 @@ router.post(
         };
         // send it back to client. We send existingUser which has the password properity reveald, but this will not be send
         // password and __v are removed from this object (check user model) while sending over JSON and _id is turned to id
-        res.status(200).send(existingUser);
+        res.status(200).json({user: existingUser});
     }
 );
 
