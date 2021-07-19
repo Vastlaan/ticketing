@@ -3,6 +3,8 @@ import {app} from '../../app'
 import {signup} from '../../test/setup'
 import {Ticket} from '../../models/ticket'
 
+jest.mock('../../nats-client')
+
 it('returns status 404 if the ticket is not found', async()=>{
 
   const response = await request(app)

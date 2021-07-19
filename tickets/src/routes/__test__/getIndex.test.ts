@@ -2,6 +2,8 @@ import request from 'supertest'
 import {app} from '../../app'
 import {signup} from '../../test/setup'
 
+jest.mock('../../nats-client')
+
 it("gets empty array if there are no tickets", async ()=>{
   const response = await request(app)
     .get('/api/tickets')

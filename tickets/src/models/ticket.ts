@@ -4,13 +4,13 @@ const {Schema} = mongoose
 
 interface TicketDoc extends mongoose.Document{
   title: string,
-  price: string,
+  price: number,
   userId: string
 }
 
 interface TicketAttributes {
   title: string,
-  price: string,
+  price: number,
   userId: string
 }
 
@@ -24,7 +24,7 @@ const ticketSchema = new Schema({
     required: true
   },
   price: {
-    type: String,
+    type: Number,
     required: true
   },
   userId: {

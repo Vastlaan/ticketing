@@ -32,3 +32,11 @@ build:
               manual:
                   - src: "src/**/*.ts"  # path inside the context
                     dest: .
+        - image: noirfatale/orders
+          context: orders #directory to watch
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "src/**/*.ts"  # path inside the context
+                    dest: .

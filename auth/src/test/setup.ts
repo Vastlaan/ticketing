@@ -5,12 +5,9 @@ import { app } from "../app";
 
 let mongo: any;
 declare global {
-    namespace NodeJS {
-        interface Global {
-            signup(): Promise<string[]>;
-        }
-    }
+    function signup(): Promise<string[]>;
 }
+
 
 // this function belongs to jest (as it is jest setup file) and is run before any test will begin
 beforeAll(async () => {

@@ -1,6 +1,8 @@
 import {Router, Request, Response, NextFunction} from 'express'
 import { requireAuthorization, requestValidator, NotFoundError, NotAuthorizedError } from '@itcontext/ticketing-common'
 import {Ticket} from '../models/ticket'
+import TicketUpdatedPublisher from '../events/publishers/ticket-updated-publisher';
+import { natsClient } from '../nats-client';
 import {body} from 'express-validator'
 
 const router = Router();
@@ -28,6 +30,13 @@ router.put('/api/tickets/:id', requireAuthorization, [
     ticket.price = price
 
     await ticket.save()
+
+    await new TicketUpdatedPublisher(natsClient.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId
+    })
 
     console.log('TICKET: ', ticket)
 

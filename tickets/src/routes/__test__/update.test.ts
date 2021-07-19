@@ -3,6 +3,8 @@ import {app} from '../../app'
 import mongoose from 'mongoose'
 import {signup} from '../../test/setup'
 
+jest.mock('../../nats-client')
+
 
 it("returns 404 if the ticket with given id doesn't exist", async()=>{
   // create a fake ObjectId
