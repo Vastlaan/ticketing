@@ -3,8 +3,6 @@ import {natsClient} from './nats-client'
 import { app } from "./app";
 
 const start = async () => {
-
-    console.log(global.global)
     
     if (!process.env.JWT_KEY || !process.env.MONGO_URI || !process.env.NATS_URL || !process.env.NATS_CLUSTER_ID || !process.env.NATS_CLIENT_ID) {
         throw new Error("The environmental varibles must be defined!");
@@ -38,7 +36,7 @@ const start = async () => {
     const PORT = 3000 || process.env.PORT;
 
     app.listen(PORT, () => {
-        console.log(`App is listening on porta: ${PORT} !`);
+        console.log(`App is listening on port: ${PORT} !`);
     });
 };
 
